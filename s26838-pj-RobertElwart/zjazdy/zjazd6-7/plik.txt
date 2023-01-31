@@ -1,0 +1,72 @@
+#Get-Module -ListAvailable
+-Polecenie wyswietla liste modulow PowerShell, ktore 
+zostaly zaimportowane lub ktore mozna zaimportowac do sesji PowerShell
+
+# Jezeli chcemy uruchomic kolejne polecenie na danych wyjsciowych z poprzedniego 
+polecenia uzywamy znaku potok "|" (ang pipeline) np. Command-1 | Command-2 | Command-3
+
+# "?" - skrot od Where-Object
+  "%" - skrot od While-Object (petla)
+  Out-GridView - wypisuje dane w postaci tabelki graficznej otworzonej w nowym okienku
+  Out-File - wypisuje dane do pliku
+  Out-Null - przetworzy dane jednak nic z nimi nie zrobi/nie wypisze
+
+& - operator wywołania "call"
+& C:\Windows\notepad.exe
+
+Out-GridView
+#Pozwala nam wyświetlać moduły w postaci graficznej
+
+#sprawdźmy jakie "dyski" są dostępne w PowerShell-u
+
+Get-PSDrive
+
+Name           Used (GB)     Free (GB) Provider      Root                                               CurrentLocation
+----           ---------     --------- --------      ----                                               ---------------
+Alias                                  Alias
+C                 204,80         38,70 FileSystem    C:\                                                   Users\Robert
+Cert                                   Certificate   \
+D                 109,00        243,03 FileSystem    D:\
+E                                      FileSystem    E:\
+Env                                    Environment
+Function                               Function
+HKCU                                   Registry      HKEY_CURRENT_USER
+HKLM                                   Registry      HKEY_LOCAL_MACHINE
+Variable                               Variable
+WSMan                                  WSMan
+
+
+cd HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
+
+ls | %{
+>> Get-ItemProperty $_.pspath | Select-Object DisplayName, InstallDate, UninstallString
+>> } | Format-Table -AutoSize
+
+
+DisplayName                                                    InstallDate UninstallString
+-----------                                                    ----------- ---------------
+CCleaner                                                                   "C:\Program Files\CCleaner\uninst.exe"
+
+DAEMON Tools Ultra                                                         C:\Program Files\DAEMON Tools Ultra\uninst.exe
+Mozilla Firefox (x64 pl)                                                   "C:\Program Files\Mozilla Firefox\uninstall\helper.exe"
+Mozilla Maintenance Service                                                "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe"
+WinRAR 6.02 (64-bitowy)                                                    C:\Program Files\WinRAR\uninstall.exe
+Core Temp 1.17.1                                               20220118    "C:\Program Files\Core Temp\unins000.exe"
+Microsoft Build of OpenJDK with Hotspot 11.0.12+7 (x64)        20221013    MsiExec.exe /I{0D2DCFF8-7746-445B-B643-9E85ABE01173}
+Microsoft Visual C++ 2010  x64 Redistributable - 10.0.40219    20220114    MsiExec.exe /X{1D8E6291-B0D5-35EC-8441-6616F567A0F7}
+Java 8 Update 351 (64-bit)                                     20221025    MsiExec.exe /X{26A24AE4-039D-4CA4-87B4-2F64180351F0}
+Microsoft Visual C++ 2022 X64 Minimum Runtime - 14.32.31332    20221013    MsiExec.exe /I{3407B900-37F5-4CC2-B612-5CD5D580A163}
+vs_communityx64msi                                             20221013    MsiExec.exe /I{34379D43-E142-4689-A2AA-245D46E051F3}
+Sprawdzanie kondycji komputera z systemem Windows              20220516    MsiExec.exe /X{41E85393-7ED3-4C54-AC25-51F8CDF39CDF}
+vs_devenx64vmsi                                                20221013    MsiExec.exe /I{5B4AAF86-AA42-4C32-BE98-A057A6F118BD}
+Microsoft System CLR Types for SQL Server 2019                 20221013    MsiExec.exe /I{5BC7E9EB-13E8-45DB-8A60-F2481FEB4595}
+
+#Chcę wyświetlić po "DisplayName, InstallDate, UninstallString"
+
+
+
+#Moduł Bitstransfer pozwala nam pobierać pliki z internetu np:
+
+Start-BitsTransfer -Source http://zstwodzislaw.net/userfiles/file/file2022/regulamin_rekrutacji_2022_2023.pdf -Destination D:\
+
+#Pobierze nam plik z tej strony i umiesci go na dysku D
